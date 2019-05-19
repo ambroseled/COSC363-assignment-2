@@ -18,11 +18,7 @@ private:
     float height;
 
 public:
-    Cone()
-		: center(glm::vec3(0)), radius(1), height(1)
-	{
-		color = glm::vec3(1);
-	};
+    Cone(void);
 
     Cone(glm::vec3 cen, float rad, float hgt, glm::vec3 col)
         : center(cen), radius(rad), height(hgt)

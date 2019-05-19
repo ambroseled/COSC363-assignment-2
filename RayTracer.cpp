@@ -14,6 +14,8 @@
 #include <GL/glut.h>
 #include "Plane.h"
 #include "Cone.h"
+#include "TextureBMP.h"
+#include "Cylinder.h"
 using namespace std;
 
 const float WIDTH = 20.0;
@@ -27,6 +29,8 @@ const float YMIN = -HEIGHT * 0.5;
 const float YMAX =  HEIGHT * 0.5;
 const float ETA = 1.01;
 vector<SceneObject*> sceneObjects;  //A global list containing pointers to objects in the scene
+TextureBMP textureSphere;
+TextureBMP textureStars;
 
 
 //---The most important function in a ray tracer! ----------------------------------
@@ -37,6 +41,7 @@ glm::vec3 trace(Ray ray, int step)
 {
 	glm::vec3 backgroundCol(0);
 	glm::vec3 light(10, 40, -3);
+	glm::vec3 secondLight(20, 20, -120);
 	glm::vec3 ambientCol(0.2);   //Ambient color of light
     glm::vec3 colorSum(0.0);
 	float transVal = 0.2;
@@ -50,6 +55,39 @@ glm::vec3 trace(Ray ray, int step)
     glm::vec3 lightVector = light - ray.xpt;
     glm::vec3 lightUnit = glm::normalize(lightVector);
     glm::vec3 reflVector = glm::reflect(-lightUnit, normalVector);
+
+
+	// Patterned floor - chequers
+   if(ray.xindex == 3) {
+	   int modx = (int)((ray.xpt.x + 50) / 8) % 2;
+	   int modz = (int)((ray.xpt.z + 200) / 8) % 2;
+
+	   if((modx && modz) || (!modx && !modz)) {
+		   materialCol = glm::vec3(0.25, 0.25, 0.25);
+	   } else {
+		   materialCol = glm::vec3(0, 0.632, 1);
+	   }
+   }
+
+   // Procedural pattern on sphere
+   if(ray.xindex == 7) {
+	   int val = ((int) (ray.xpt.x + ray.xpt.y)) % 3;
+	   if (val == 0) {
+		   materialCol = glm::vec3(1, 0.4, 0.35);
+	   } else if (val == 1) {
+		   materialCol = glm::vec3(0.8, 1, 0.6);
+	   } else {
+		   materialCol = glm::vec3(0.55, 0.15, 1);
+	   }
+   }
+
+   if (ray.xindex == 1 && step < MAX_STEPS) {
+	   glm::vec3 center(3, 3, -90.0);
+	   glm::vec3 dirTex = glm::normalize(ray.xpt - center);
+	   float s = (0.5 - atan2(dirTex.z, dirTex.x) + M_PI) / (2 * M_PI);
+	   float t = 0.5 + asin(dirTex.y) / M_PI;
+	   materialCol = textureSphere.getColorAt(s, t);
+   }
 
 
     Ray shadow(ray.xpt, lightUnit);
@@ -78,13 +116,13 @@ glm::vec3 trace(Ray ray, int step)
     }
 
 
-    if(ray.xindex == 0 && step < MAX_STEPS)
-     {
-        glm::vec3 reflectedDir = glm::reflect(ray.dir, normalVector);
-        Ray reflectedRay(ray.xpt, reflectedDir);
-        glm::vec3 reflectedCol = trace(reflectedRay, step+1); //Recursion!
-        colorSum = colorSum + (0.8f*reflectedCol);
-     }
+	 if((ray.xindex == 0) && step < MAX_STEPS)
+      {
+         glm::vec3 reflectedDir = glm::reflect(ray.dir, normalVector);
+         Ray reflectedRay(ray.xpt, reflectedDir);
+         glm::vec3 reflectedCol = trace(reflectedRay, step+1); //Recursion!
+         colorSum = (colorSum*0.2f) + (0.8f*reflectedCol);
+      }
 
 	 // Transparency of cone through refraction
 	 if(ray.xindex == 5 && step < MAX_STEPS)
@@ -107,29 +145,6 @@ glm::vec3 trace(Ray ray, int step)
 		 return colorSum;
       }
 
-	  // Patterned floor - chequers
-	 if(ray.xindex == 3) {
-		 int modx = (int)((ray.xpt.x + 50) / 8) % 2;
-		 int modz = (int)((ray.xpt.z + 200) / 8) % 2;
-
-		 if((modx && modz) || (!modx && !modz)) {
-			 materialCol = glm::vec3(0, 0.2, 0);
-		 } else {
-			 materialCol = glm::vec3(1, 0, 1);
-		 }
-	 }
-
-	 // Procedural pattern on sphere
-	 if(ray.xindex == 7) {
-		 int val = ((int) (ray.xpt.x + ray.xpt.y - 6)) % 3;
-		 if (val == 0) {
-			 materialCol = glm::vec3(1, 0.4, 0.27) + spec;
-		 } else if (val == 1) {
-			 materialCol = glm::vec3(0.8, 1, 0.6) + spec;
-		 } else {
-			 materialCol = glm::vec3(0.55, 0.15, 1) + spec;
-		 }
-	 }
 
     return materialCol + colorSum*0.8f;
 }
@@ -216,9 +231,12 @@ void initialize()
     gluOrtho2D(XMIN, XMAX, YMIN, YMAX);
     glClearColor(0, 0, 0, 1);
 
+	textureSphere = TextureBMP("Gaseous4.bmp");
+	textureStars = TextureBMP("stars.bmp");
+
 	//-- Create a pointer to a sphere object
     Sphere *sphere1 = new Sphere(glm::vec3(-5.0, -5.0, -110.0), 10.0, glm::vec3(0, 0, 1));
-    Sphere *sphere2 = new Sphere(glm::vec3(3, 5, -90.0), 2.0, glm::vec3(1, 0, 1));
+    Sphere *sphere2 = new Sphere(glm::vec3(3, 5, -90.0), 3, glm::vec3(1, 0, 1));
     Sphere *sphere3 = new Sphere(glm::vec3(-22, -17, -120), 2.5, glm::vec3(0, 1, 1));
 	Sphere *sun = new Sphere(glm::vec3(27, 25, -130.0), 4, glm::vec3(0, 1, 1));
 
@@ -232,11 +250,13 @@ void initialize()
 	                        glm::vec3(50., -20, -200),
 	                        glm::vec3(50., 50, -200),
 	                        glm::vec3(-50., 500, -200),
-	                        glm::vec3(0.5, 0.5, 0));
+	                        glm::vec3(1, 1, 1));
 
 
-    Cone *coneTrans = new Cone(glm::vec3(-15, -15, -75), 4, 10, glm::vec3(1, 0, 1));
+    Cone *coneTrans = new Cone(glm::vec3(-15, -20, -85), 4, 10, glm::vec3(1, 0, 1));
 	Cone *coneNormal = new Cone(glm::vec3(12.5, -10, -92.5), 2, 6, glm::vec3(1, 0, 1));
+
+	Cylinder *cylinder = new Cylinder(glm::vec3(25, -5, -130), 5, 10, glm::vec3(0, 1, 0));
 
 	//--Add the above to the list of scene objects.
     sceneObjects.push_back(sphere1); // 0
@@ -247,6 +267,7 @@ void initialize()
 	sceneObjects.push_back(coneTrans); // 5
 	sceneObjects.push_back(coneNormal); // 6
 	sceneObjects.push_back(sun); // 7
+	sceneObjects.push_back(cylinder); // 8
 
 
 	drawBox(5, 5, 5, 10, -15, -90, glm::vec3(0.4648, 0, 0.996));

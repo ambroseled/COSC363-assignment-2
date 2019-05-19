@@ -150,6 +150,33 @@ Cone.cpp.s:
 	$(MAKE) -f CMakeFiles/RayTracer.out.dir/build.make CMakeFiles/RayTracer.out.dir/Cone.cpp.s
 .PHONY : Cone.cpp.s
 
+Cylinder.o: Cylinder.cpp.o
+
+.PHONY : Cylinder.o
+
+# target to build an object file
+Cylinder.cpp.o:
+	$(MAKE) -f CMakeFiles/RayTracer.out.dir/build.make CMakeFiles/RayTracer.out.dir/Cylinder.cpp.o
+.PHONY : Cylinder.cpp.o
+
+Cylinder.i: Cylinder.cpp.i
+
+.PHONY : Cylinder.i
+
+# target to preprocess a source file
+Cylinder.cpp.i:
+	$(MAKE) -f CMakeFiles/RayTracer.out.dir/build.make CMakeFiles/RayTracer.out.dir/Cylinder.cpp.i
+.PHONY : Cylinder.cpp.i
+
+Cylinder.s: Cylinder.cpp.s
+
+.PHONY : Cylinder.s
+
+# target to generate assembly for a file
+Cylinder.cpp.s:
+	$(MAKE) -f CMakeFiles/RayTracer.out.dir/build.make CMakeFiles/RayTracer.out.dir/Cylinder.cpp.s
+.PHONY : Cylinder.cpp.s
+
 Plane.o: Plane.cpp.o
 
 .PHONY : Plane.o
@@ -285,6 +312,33 @@ Sphere.cpp.s:
 	$(MAKE) -f CMakeFiles/RayTracer.out.dir/build.make CMakeFiles/RayTracer.out.dir/Sphere.cpp.s
 .PHONY : Sphere.cpp.s
 
+TextureBMP.o: TextureBMP.cpp.o
+
+.PHONY : TextureBMP.o
+
+# target to build an object file
+TextureBMP.cpp.o:
+	$(MAKE) -f CMakeFiles/RayTracer.out.dir/build.make CMakeFiles/RayTracer.out.dir/TextureBMP.cpp.o
+.PHONY : TextureBMP.cpp.o
+
+TextureBMP.i: TextureBMP.cpp.i
+
+.PHONY : TextureBMP.i
+
+# target to preprocess a source file
+TextureBMP.cpp.i:
+	$(MAKE) -f CMakeFiles/RayTracer.out.dir/build.make CMakeFiles/RayTracer.out.dir/TextureBMP.cpp.i
+.PHONY : TextureBMP.cpp.i
+
+TextureBMP.s: TextureBMP.cpp.s
+
+.PHONY : TextureBMP.s
+
+# target to generate assembly for a file
+TextureBMP.cpp.s:
+	$(MAKE) -f CMakeFiles/RayTracer.out.dir/build.make CMakeFiles/RayTracer.out.dir/TextureBMP.cpp.s
+.PHONY : TextureBMP.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -297,6 +351,9 @@ help:
 	@echo "... Cone.o"
 	@echo "... Cone.i"
 	@echo "... Cone.s"
+	@echo "... Cylinder.o"
+	@echo "... Cylinder.i"
+	@echo "... Cylinder.s"
 	@echo "... Plane.o"
 	@echo "... Plane.i"
 	@echo "... Plane.s"
@@ -312,6 +369,9 @@ help:
 	@echo "... Sphere.o"
 	@echo "... Sphere.i"
 	@echo "... Sphere.s"
+	@echo "... TextureBMP.o"
+	@echo "... TextureBMP.i"
+	@echo "... TextureBMP.s"
 .PHONY : help
 
 

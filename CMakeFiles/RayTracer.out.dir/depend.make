@@ -5,6 +5,10 @@ CMakeFiles/RayTracer.out.dir/Cone.cpp.o: Cone.cpp
 CMakeFiles/RayTracer.out.dir/Cone.cpp.o: Cone.h
 CMakeFiles/RayTracer.out.dir/Cone.cpp.o: SceneObject.h
 
+CMakeFiles/RayTracer.out.dir/Cylinder.cpp.o: Cylinder.cpp
+CMakeFiles/RayTracer.out.dir/Cylinder.cpp.o: Cylinder.h
+CMakeFiles/RayTracer.out.dir/Cylinder.cpp.o: SceneObject.h
+
 CMakeFiles/RayTracer.out.dir/Plane.cpp.o: Plane.cpp
 CMakeFiles/RayTracer.out.dir/Plane.cpp.o: Plane.h
 CMakeFiles/RayTracer.out.dir/Plane.cpp.o: SceneObject.h
@@ -14,11 +18,13 @@ CMakeFiles/RayTracer.out.dir/Ray.cpp.o: Ray.h
 CMakeFiles/RayTracer.out.dir/Ray.cpp.o: SceneObject.h
 
 CMakeFiles/RayTracer.out.dir/RayTracer.cpp.o: Cone.h
+CMakeFiles/RayTracer.out.dir/RayTracer.cpp.o: Cylinder.h
 CMakeFiles/RayTracer.out.dir/RayTracer.cpp.o: Plane.h
 CMakeFiles/RayTracer.out.dir/RayTracer.cpp.o: Ray.h
 CMakeFiles/RayTracer.out.dir/RayTracer.cpp.o: RayTracer.cpp
 CMakeFiles/RayTracer.out.dir/RayTracer.cpp.o: SceneObject.h
 CMakeFiles/RayTracer.out.dir/RayTracer.cpp.o: Sphere.h
+CMakeFiles/RayTracer.out.dir/RayTracer.cpp.o: TextureBMP.h
 
 CMakeFiles/RayTracer.out.dir/SceneObject.cpp.o: SceneObject.cpp
 CMakeFiles/RayTracer.out.dir/SceneObject.cpp.o: SceneObject.h
@@ -26,4 +32,7 @@ CMakeFiles/RayTracer.out.dir/SceneObject.cpp.o: SceneObject.h
 CMakeFiles/RayTracer.out.dir/Sphere.cpp.o: SceneObject.h
 CMakeFiles/RayTracer.out.dir/Sphere.cpp.o: Sphere.cpp
 CMakeFiles/RayTracer.out.dir/Sphere.cpp.o: Sphere.h
+
+CMakeFiles/RayTracer.out.dir/TextureBMP.cpp.o: TextureBMP.cpp
+CMakeFiles/RayTracer.out.dir/TextureBMP.cpp.o: TextureBMP.h
 
