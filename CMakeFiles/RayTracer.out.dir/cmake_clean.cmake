@@ -7,6 +7,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/RayTracer.out.dir/Cone.cpp.o"
   "CMakeFiles/RayTracer.out.dir/TextureBMP.cpp.o"
   "CMakeFiles/RayTracer.out.dir/Cylinder.cpp.o"
+  "CMakeFiles/RayTracer.out.dir/Tetrahedron.cpp.o"
   "RayTracer.out.pdb"
   "RayTracer.out"
 )

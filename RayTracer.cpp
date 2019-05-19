@@ -16,11 +16,12 @@
 #include "Cone.h"
 #include "TextureBMP.h"
 #include "Cylinder.h"
+#include "Tetrahedron.h"
 using namespace std;
 
 const float WIDTH = 20.0;
 const float HEIGHT = 20.0;
-const float EDIST = 40.0;
+float EDIST = 40.0;
 const int NUMDIV = 500;
 const int MAX_STEPS = 5;
 const float XMIN = -WIDTH * 0.5;
@@ -41,7 +42,7 @@ glm::vec3 trace(Ray ray, int step)
 {
 	glm::vec3 backgroundCol(0);
 	glm::vec3 light(10, 40, -3);
-	glm::vec3 secondLight(20, 20, -120);
+	glm::vec3 light2(30, 40, 0);
 	glm::vec3 ambientCol(0.2);   //Ambient color of light
     glm::vec3 colorSum(0.0);
 	float transVal = 0.2;
@@ -53,12 +54,22 @@ glm::vec3 trace(Ray ray, int step)
     glm::vec3 materialCol = sceneObjects[ray.xindex]->getColor(); //else return object's colour
     glm::vec3 normalVector = sceneObjects[ray.xindex]->normal(ray.xpt);
     glm::vec3 lightVector = light - ray.xpt;
+	glm::vec3 lightVector2 = light2 - ray.xpt;
     glm::vec3 lightUnit = glm::normalize(lightVector);
+	glm::vec3 lightUnit2 = glm::normalize(lightVector2);
+
     glm::vec3 reflVector = glm::reflect(-lightUnit, normalVector);
+	glm::vec3 reflVector2 = glm::reflect(-lightUnit2, normalVector);
 
+	float lDotn = glm::dot(lightUnit, normalVector);
+	float lDotn2 = glm::dot(lightUnit2, normalVector);
 
+	float rV = glm::dot(reflVector, -ray.dir);
+	float rV2 = glm::dot(reflVector2, -ray.dir);
+
+	//--------------------------
 	// Patterned floor - chequers
-   if(ray.xindex == 3) {
+	if(ray.xindex == 3) {
 	   int modx = (int)((ray.xpt.x + 50) / 8) % 2;
 	   int modz = (int)((ray.xpt.z + 200) / 8) % 2;
 
@@ -67,10 +78,12 @@ glm::vec3 trace(Ray ray, int step)
 	   } else {
 		   materialCol = glm::vec3(0, 0.632, 1);
 	   }
-   }
+	}
+	//--------------------------
 
-   // Procedural pattern on sphere
-   if(ray.xindex == 7) {
+	//--------------------------
+	// Procedural pattern on sphere
+	if(ray.xindex == 7) {
 	   int val = ((int) (ray.xpt.x + ray.xpt.y)) % 3;
 	   if (val == 0) {
 		   materialCol = glm::vec3(1, 0.4, 0.35);
@@ -79,74 +92,124 @@ glm::vec3 trace(Ray ray, int step)
 	   } else {
 		   materialCol = glm::vec3(0.55, 0.15, 1);
 	   }
-   }
+	}
+	//--------------------------
 
-   if (ray.xindex == 1 && step < MAX_STEPS) {
+	//--------------------------
+	// Texturing sphere with planet texture
+	if (ray.xindex == 1 && step < MAX_STEPS) {
 	   glm::vec3 center(3, 3, -90.0);
 	   glm::vec3 dirTex = glm::normalize(ray.xpt - center);
 	   float s = (0.5 - atan2(dirTex.z, dirTex.x) + M_PI) / (2 * M_PI);
 	   float t = 0.5 + asin(dirTex.y) / M_PI;
 	   materialCol = textureSphere.getColorAt(s, t);
-   }
+	}
+	//--------------------------
 
-
+	//--------------------------
+	// Shadow ray for light source 1
     Ray shadow(ray.xpt, lightUnit);
     shadow.closestPt(sceneObjects);
 
-    float rV = glm::dot(reflVector, -ray.dir);
-
     float spec = 0.0;
-
     if (rV > 0) {
         spec = pow(rV, 10);
     }
 	if (ray.xindex == 6) {
 		spec = 0;
 	}
-
     ambientCol += spec;
 
-    float lDotn = glm::dot(lightUnit, normalVector);
-
     if (lDotn <= 0 ||
-            (shadow.xindex > -1 && shadow.xdist < glm::length(lightVector))) {
+            (shadow.xindex > -1 && shadow.xdist < glm::length(lightVector)) || ray.xindex == 4) {
         materialCol = ambientCol*materialCol;
     } else {
         materialCol = ambientCol*materialCol + (lDotn*materialCol + spec);
     }
+	//--------------------------
 
+	//--------------------------
+	// Shadow ray for light source 2
+    Ray shadow2(ray.xpt, lightUnit2);
+    shadow2.closestPt(sceneObjects);
 
-	 if((ray.xindex == 0) && step < MAX_STEPS)
-      {
-         glm::vec3 reflectedDir = glm::reflect(ray.dir, normalVector);
-         Ray reflectedRay(ray.xpt, reflectedDir);
-         glm::vec3 reflectedCol = trace(reflectedRay, step+1); //Recursion!
-         colorSum = (colorSum*0.2f) + (0.8f*reflectedCol);
-      }
+    float spec2 = 0.0;
+    if (rV2 > 0) {
+        spec2 = pow(rV2, 10);
+    }
+	if (ray.xindex == 6) {
+		spec2 = 0;
+	}
+    ambientCol += spec2;
 
-	 // Transparency of cone through refraction
-	 if(ray.xindex == 5 && step < MAX_STEPS)
-      {
-         glm::vec3 g = glm::refract(ray.dir, normalVector, ETA);
-         Ray refractedRay(ray.xpt, g);
-         refractedRay.closestPt(sceneObjects);
-		 if (refractedRay.xindex == -1) return backgroundCol;
+    if (lDotn2 <= 0 ||
+            (shadow2.xindex > -1 && shadow2.xdist < glm::length(lightVector2))) {
+        materialCol = ambientCol*materialCol;
+    } else {
+        materialCol = ambientCol*materialCol + (lDotn2*materialCol + spec2);
+    }
+	//--------------------------
 
-		 glm::vec3 m = sceneObjects[refractedRay.xindex] -> normal(refractedRay.xpt);
-		 glm::vec3 h = glm::refract(g, -m, 1.0f/ETA);
-		 Ray refractedRay2(ray.xpt, g);
-		 refractedRay2.closestPt(sceneObjects);
-		 if (refractedRay2.xindex == -1) return backgroundCol;
+	//--------------------------
+	// Reflection off of a sphere
+	if((ray.xindex == 0) && step < MAX_STEPS)
+	{
+		glm::vec3 reflectedDir = glm::reflect(ray.dir, normalVector);
+		Ray reflectedRay(ray.xpt, reflectedDir);
+		glm::vec3 reflectedCol = trace(reflectedRay, step+1); //Recursion!
+		colorSum = (colorSum*0.2f) + (0.8f*reflectedCol);
+	}
+	//--------------------------
 
-		 glm::vec3 refColor = trace(refractedRay2, step+1);
-		 colorSum *= transVal;
-		 colorSum += refColor * (1 - transVal);
+	// Transparency of cone through refraction
+	//--------------------------
+	if(ray.xindex == 5 && step < MAX_STEPS)
+	{
+		glm::vec3 g = glm::refract(ray.dir, normalVector, ETA);
+		Ray refractedRay(ray.xpt, g);
+		refractedRay.closestPt(sceneObjects);
+		if (refractedRay.xindex == -1) return backgroundCol;
 
-		 return colorSum;
-      }
+		glm::vec3 m = sceneObjects[refractedRay.xindex] -> normal(refractedRay.xpt);
+		glm::vec3 h = glm::refract(g, -m, 1.0f/ETA);
+		Ray refractedRay2(ray.xpt, g);
+		refractedRay2.closestPt(sceneObjects);
+		if (refractedRay2.xindex == -1) return backgroundCol;
+
+		glm::vec3 refColor = trace(refractedRay2, step+1);
+		colorSum *= transVal;
+		colorSum += refColor * (1 - transVal);
+
+		return colorSum;
+	}
+	//--------------------------
 
 
     return materialCol + colorSum*0.8f;
+}
+
+
+glm::vec3 antiAlias(float x, float y, glm::vec3 eye, float pixelSize) {
+	float quarterLower = pixelSize * 0.25;
+	float quarterUpper = pixelSize * 0.75;
+	glm::vec2 quarters[4] {
+		glm::vec2(quarterLower, quarterLower),
+		glm::vec2(quarterLower, quarterUpper),
+		glm::vec2(quarterUpper, quarterLower),
+		glm::vec2(quarterUpper, quarterUpper),
+	};
+
+	glm::vec3 colorSum = glm::vec3(0, 0, 0);
+
+	for (int i = 0; i < 4; i++) {
+		Ray ray = Ray(eye, glm::vec3(x + quarters[0].x, y + quarters[0].y, -EDIST));
+		ray.normalize();
+		colorSum += trace(ray, 1);
+	}
+
+	colorSum *= glm::vec3(0.25);
+
+	return colorSum;
 }
 
 void drawBox(float length, float width, float height, float x, float y, float z, glm::vec3 col) {
@@ -204,7 +267,8 @@ void display()
 
 		    Ray ray = Ray(eye, dir);		//Create a ray originating from the camera in the direction 'dir'
 			ray.normalize();				//Normalize the direction of the ray to a unit vector
-		    glm::vec3 col = trace (ray, 1); //Trace the primary ray and get the colour value
+		   // glm::vec3 col = antiAlias(xp, yp, eye, cellX); //Trace the primary ray and get the colour value
+		    glm::vec3 col = trace(ray, 1);
 
 			glColor3f(col.r, col.g, col.b);
 			glVertex2f(xp, yp);				//Draw each cell with its color value
@@ -216,6 +280,15 @@ void display()
 
     glEnd();
     glFlush();
+}
+
+
+void special(int key, int x, int y)
+{
+    if (key == GLUT_KEY_UP) EDIST += 1;
+    else if (key == GLUT_KEY_DOWN) EDIST -= 1;
+
+    glutPostRedisplay();
 }
 
 
@@ -250,13 +323,15 @@ void initialize()
 	                        glm::vec3(50., -20, -200),
 	                        glm::vec3(50., 50, -200),
 	                        glm::vec3(-50., 500, -200),
-	                        glm::vec3(1, 1, 1));
+	                        glm::vec3(0.4, 0.2, 0));
 
 
     Cone *coneTrans = new Cone(glm::vec3(-15, -20, -85), 4, 10, glm::vec3(1, 0, 1));
 	Cone *coneNormal = new Cone(glm::vec3(12.5, -10, -92.5), 2, 6, glm::vec3(1, 0, 1));
 
 	Cylinder *cylinder = new Cylinder(glm::vec3(25, -5, -130), 5, 10, glm::vec3(0, 1, 0));
+
+	Tetrahedron *tetrahedron = new Tetrahedron(glm::vec3(-6, -14, -100), glm::vec3(-5.5, 0, -112.5), glm::vec3(-9, -14, -110), glm::vec3(1, 0, 1));
 
 	//--Add the above to the list of scene objects.
     sceneObjects.push_back(sphere1); // 0
@@ -283,6 +358,7 @@ int main(int argc, char *argv[]) {
     glutInitWindowPosition(20, 20);
     glutCreateWindow("Raytracer");
 
+	glutSpecialFunc(special);
     glutDisplayFunc(display);
     initialize();
 

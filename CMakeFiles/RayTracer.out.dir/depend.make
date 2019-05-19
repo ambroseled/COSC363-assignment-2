@@ -24,6 +24,7 @@ CMakeFiles/RayTracer.out.dir/RayTracer.cpp.o: Ray.h
 CMakeFiles/RayTracer.out.dir/RayTracer.cpp.o: RayTracer.cpp
 CMakeFiles/RayTracer.out.dir/RayTracer.cpp.o: SceneObject.h
 CMakeFiles/RayTracer.out.dir/RayTracer.cpp.o: Sphere.h
+CMakeFiles/RayTracer.out.dir/RayTracer.cpp.o: Tetrahedron.h
 CMakeFiles/RayTracer.out.dir/RayTracer.cpp.o: TextureBMP.h
 
 CMakeFiles/RayTracer.out.dir/SceneObject.cpp.o: SceneObject.cpp
@@ -32,6 +33,10 @@ CMakeFiles/RayTracer.out.dir/SceneObject.cpp.o: SceneObject.h
 CMakeFiles/RayTracer.out.dir/Sphere.cpp.o: SceneObject.h
 CMakeFiles/RayTracer.out.dir/Sphere.cpp.o: Sphere.cpp
 CMakeFiles/RayTracer.out.dir/Sphere.cpp.o: Sphere.h
+
+CMakeFiles/RayTracer.out.dir/Tetrahedron.cpp.o: SceneObject.h
+CMakeFiles/RayTracer.out.dir/Tetrahedron.cpp.o: Tetrahedron.cpp
+CMakeFiles/RayTracer.out.dir/Tetrahedron.cpp.o: Tetrahedron.h
 
 CMakeFiles/RayTracer.out.dir/TextureBMP.cpp.o: TextureBMP.cpp
 CMakeFiles/RayTracer.out.dir/TextureBMP.cpp.o: TextureBMP.h

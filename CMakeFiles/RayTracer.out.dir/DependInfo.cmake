@@ -11,6 +11,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/cosc/student/ajl190/Desktop/@nd pro/COSC363/COSC363-assigment-2/RayTracer.cpp" "/home/cosc/student/ajl190/Desktop/@nd pro/COSC363/COSC363-assigment-2/CMakeFiles/RayTracer.out.dir/RayTracer.cpp.o"
   "/home/cosc/student/ajl190/Desktop/@nd pro/COSC363/COSC363-assigment-2/SceneObject.cpp" "/home/cosc/student/ajl190/Desktop/@nd pro/COSC363/COSC363-assigment-2/CMakeFiles/RayTracer.out.dir/SceneObject.cpp.o"
   "/home/cosc/student/ajl190/Desktop/@nd pro/COSC363/COSC363-assigment-2/Sphere.cpp" "/home/cosc/student/ajl190/Desktop/@nd pro/COSC363/COSC363-assigment-2/CMakeFiles/RayTracer.out.dir/Sphere.cpp.o"
+  "/home/cosc/student/ajl190/Desktop/@nd pro/COSC363/COSC363-assigment-2/Tetrahedron.cpp" "/home/cosc/student/ajl190/Desktop/@nd pro/COSC363/COSC363-assigment-2/CMakeFiles/RayTracer.out.dir/Tetrahedron.cpp.o"
   "/home/cosc/student/ajl190/Desktop/@nd pro/COSC363/COSC363-assigment-2/TextureBMP.cpp" "/home/cosc/student/ajl190/Desktop/@nd pro/COSC363/COSC363-assigment-2/CMakeFiles/RayTracer.out.dir/TextureBMP.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

@@ -312,6 +312,33 @@ Sphere.cpp.s:
 	$(MAKE) -f CMakeFiles/RayTracer.out.dir/build.make CMakeFiles/RayTracer.out.dir/Sphere.cpp.s
 .PHONY : Sphere.cpp.s
 
+Tetrahedron.o: Tetrahedron.cpp.o
+
+.PHONY : Tetrahedron.o
+
+# target to build an object file
+Tetrahedron.cpp.o:
+	$(MAKE) -f CMakeFiles/RayTracer.out.dir/build.make CMakeFiles/RayTracer.out.dir/Tetrahedron.cpp.o
+.PHONY : Tetrahedron.cpp.o
+
+Tetrahedron.i: Tetrahedron.cpp.i
+
+.PHONY : Tetrahedron.i
+
+# target to preprocess a source file
+Tetrahedron.cpp.i:
+	$(MAKE) -f CMakeFiles/RayTracer.out.dir/build.make CMakeFiles/RayTracer.out.dir/Tetrahedron.cpp.i
+.PHONY : Tetrahedron.cpp.i
+
+Tetrahedron.s: Tetrahedron.cpp.s
+
+.PHONY : Tetrahedron.s
+
+# target to generate assembly for a file
+Tetrahedron.cpp.s:
+	$(MAKE) -f CMakeFiles/RayTracer.out.dir/build.make CMakeFiles/RayTracer.out.dir/Tetrahedron.cpp.s
+.PHONY : Tetrahedron.cpp.s
+
 TextureBMP.o: TextureBMP.cpp.o
 
 .PHONY : TextureBMP.o
@@ -369,6 +396,9 @@ help:
 	@echo "... Sphere.o"
 	@echo "... Sphere.i"
 	@echo "... Sphere.s"
+	@echo "... Tetrahedron.o"
+	@echo "... Tetrahedron.i"
+	@echo "... Tetrahedron.s"
 	@echo "... TextureBMP.o"
 	@echo "... TextureBMP.i"
 	@echo "... TextureBMP.s"
