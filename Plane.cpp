@@ -12,28 +12,27 @@
 
 /**
 * Checks if a point pt is inside the current polygon
-* Implement a point inclusion test using 
+* Implement a point inclusion test using
 * member variables a, b, c, d.
 */
 bool Plane::isInside(glm::vec3 pt)
 {
 
-    glm::vec3 uA = b - a;
-    glm::vec3 uB = c - b;
-    glm::vec3 uC = d - c;
-    glm::vec3 uD = a - d;
-    glm::vec3 vA = pt - a;
-    glm::vec3 vB = pt - b;
-    glm::vec3 vC = pt - c;
-    glm::vec3 vD = pt - d;
     glm::vec3 n = normal(pt);
-	
-    return ((glm::dot(glm::cross(uA, vA), n) > 0) && (glm::dot(glm::cross(uB, vB), n) > 0)
-            && (glm::dot(glm::cross(uD, vD), n) > 0) && (glm::dot(glm::cross(uD, vD), n)) > 0);
+	float A = glm::dot(cross((b-a),(pt-a)),n);
+	float B =  glm::dot(cross((c-b),(pt-b)),n);
+	float C = glm::dot(cross((d-c),(pt-c)),n);
+	float D = glm::dot(cross((a-d),(pt-d)),n);
+
+	if (A > 0 && B>0 && C>0 && D>0){
+		return true;
+	}else{
+		return false;
+    }
 }
 
 /**
-* Plane's intersection method.  The input is a ray (pos, dir). 
+* Plane's intersection method.  The input is a ray (pos, dir).
 */
 float Plane::intersect(glm::vec3 posn, glm::vec3 dir)
 {
@@ -50,7 +49,7 @@ float Plane::intersect(glm::vec3 posn, glm::vec3 dir)
 
 /**
 * Returns the unit normal vector at a given point.
-* Compute the plane's normal vector using 
+* Compute the plane's normal vector using
 * member variables a, b, c, d.
 * The parameter pt is a dummy variable and is not used.
 */
@@ -64,6 +63,3 @@ glm::vec3 Plane::normal(glm::vec3 pt)
 
     return n;
 }
-
-
-

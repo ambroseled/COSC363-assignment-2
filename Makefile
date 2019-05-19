@@ -123,6 +123,33 @@ RayTracer.out/fast:
 	$(MAKE) -f CMakeFiles/RayTracer.out.dir/build.make CMakeFiles/RayTracer.out.dir/build
 .PHONY : RayTracer.out/fast
 
+Cone.o: Cone.cpp.o
+
+.PHONY : Cone.o
+
+# target to build an object file
+Cone.cpp.o:
+	$(MAKE) -f CMakeFiles/RayTracer.out.dir/build.make CMakeFiles/RayTracer.out.dir/Cone.cpp.o
+.PHONY : Cone.cpp.o
+
+Cone.i: Cone.cpp.i
+
+.PHONY : Cone.i
+
+# target to preprocess a source file
+Cone.cpp.i:
+	$(MAKE) -f CMakeFiles/RayTracer.out.dir/build.make CMakeFiles/RayTracer.out.dir/Cone.cpp.i
+.PHONY : Cone.cpp.i
+
+Cone.s: Cone.cpp.s
+
+.PHONY : Cone.s
+
+# target to generate assembly for a file
+Cone.cpp.s:
+	$(MAKE) -f CMakeFiles/RayTracer.out.dir/build.make CMakeFiles/RayTracer.out.dir/Cone.cpp.s
+.PHONY : Cone.cpp.s
+
 Plane.o: Plane.cpp.o
 
 .PHONY : Plane.o
@@ -267,6 +294,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... RayTracer.out"
 	@echo "... edit_cache"
+	@echo "... Cone.o"
+	@echo "... Cone.i"
+	@echo "... Cone.s"
 	@echo "... Plane.o"
 	@echo "... Plane.i"
 	@echo "... Plane.s"
