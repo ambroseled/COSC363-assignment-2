@@ -238,6 +238,27 @@ void drawBox(float length, float width, float height, float x, float y, float z,
 	sceneObjects.push_back(top);
 }
 
+
+void drawTetrahedron(float len, float x, float y, float z, glm::vec3 col) {
+
+
+	glm::vec3 a = glm::vec3(x, y, z);
+	glm::vec3 b = glm::vec3(x, y, z + len);
+	glm::vec3 c = glm::vec3(x + len, y, z + len/2);
+	glm::vec3 d = glm::vec3(x + len/2, y + len, z + len/2);
+
+	Tetrahedron *left = new Tetrahedron(a, d, c, col);
+	Tetrahedron *right = new Tetrahedron(c, d, b, col);
+	Tetrahedron *back = new Tetrahedron(b, d, a, col);
+	Tetrahedron *base = new Tetrahedron(a, b, c, col);
+
+	sceneObjects.push_back(left);
+	sceneObjects.push_back(right);
+	sceneObjects.push_back(back);
+	sceneObjects.push_back(base);
+
+}
+
 //---The main display module -----------------------------------------------------------
 // In a ray tracing application, it just displays the ray traced image by drawing
 // each cell as a quad.
@@ -331,7 +352,6 @@ void initialize()
 
 	Cylinder *cylinder = new Cylinder(glm::vec3(25, -5, -130), 5, 10, glm::vec3(0, 1, 0));
 
-	Tetrahedron *tetrahedron = new Tetrahedron(glm::vec3(-6, -14, -100), glm::vec3(-5.5, 0, -112.5), glm::vec3(-9, -14, -110), glm::vec3(1, 0, 1));
 
 	//--Add the above to the list of scene objects.
     sceneObjects.push_back(sphere1); // 0
@@ -346,6 +366,7 @@ void initialize()
 
 
 	drawBox(5, 5, 5, 10, -15, -90, glm::vec3(0.4648, 0, 0.996));
+	drawTetrahedron(0.5, 25, 0, -180, glm::vec3(0, 1, 1));
 
 }
 

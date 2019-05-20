@@ -4,7 +4,7 @@
 #include <math.h>
 
 bool Tetrahedron::isInside(glm::vec3 point) {
-    glm::vec3 normal = normal(point);
+    glm::vec3 norm = normal(point);
 
     glm::vec3 uA = b - a;
     glm::vec3 uB = c - b;
@@ -14,19 +14,19 @@ bool Tetrahedron::isInside(glm::vec3 point) {
     glm::vec3 vB = point - b;
     glm::vec3 vC = point = c;
 
-    return glm::dot(glm::cross(uA, vA), normal) > 0 &&
-        glm::dot(glm::cross(uB, vB), normal) > 0 &&
-        glm::dot(glm::cross(uC, vC), normal) > 0;
+    return glm::dot(glm::cross(uA, vA), norm) > 0 &&
+        glm::dot(glm::cross(uB, vB), norm) > 0 &&
+        glm::dot(glm::cross(uC, vC), norm) > 0;
 }
 
 float Tetrahedron::intersect(glm::vec3 pos, glm::vec3 dir) {
-    glm::vec3 normal = normal(pos);
+    glm::vec3 norm = normal(pos);
     glm::vec3 vDif = a - pos;
 
-    float vDotN = glm::dot(dir, normal);
+    float vDotN = glm::dot(dir, norm);
     if (fabs(vDotN) < 0.001) return -1;
 
-    float t = glm::dot(vDif, normal) / vDotN;
+    float t = glm::dot(vDif, norm) / vDotN;
     if (fabs(t) < 0.001) return -1;
 
     glm::vec3 q = pos + dir * t;
