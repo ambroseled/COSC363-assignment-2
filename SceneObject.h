@@ -12,7 +12,9 @@
 #ifndef H_SOBJECT
 #define H_SOBJECT
 #include <glm/glm.hpp>
-
+#include <math.h>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/mat4x4.hpp>
 
 class SceneObject
 {
@@ -25,6 +27,7 @@ public:
 	virtual ~SceneObject() {}
 	glm::vec3 getColor();
 	void setColor(glm::vec3 col);
+	glm::vec3 rotateZ(glm::vec3 pos, float angle);
 };
 
 #endif

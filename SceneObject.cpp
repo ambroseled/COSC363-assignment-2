@@ -8,6 +8,7 @@
 -------------------------------------------------------------*/
 
 #include "SceneObject.h"
+#include <math.h>
 
 glm::vec3 SceneObject::getColor()
 {
@@ -17,4 +18,15 @@ glm::vec3 SceneObject::getColor()
 void SceneObject::setColor(glm::vec3 col)
 {
 	color = col;
+}
+
+glm::vec3 SceneObject::rotateZ(glm::vec3 pos, float angle)
+{
+	glm::mat4 rotationMat =
+	{
+		{cos(angle), -sin(angle), 0, 0},
+		{sin(angle), cos(angle), 0, 0},
+		{0, 0, 1, 0},
+		{0, 0, 0, 1}
+	};
 }

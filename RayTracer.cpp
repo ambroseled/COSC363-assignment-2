@@ -28,7 +28,10 @@ const float XMIN = -WIDTH * 0.5;
 const float XMAX =  WIDTH * 0.5;
 const float YMIN = -HEIGHT * 0.5;
 const float YMAX =  HEIGHT * 0.5;
-const float ETA = 1.01;
+const float ETA = 1.05;
+float eye_x = 0.;
+float eye_y = 0.;
+float eye_z = 0.;
 vector<SceneObject*> sceneObjects;  //A global list containing pointers to objects in the scene
 TextureBMP textureSphere;
 TextureBMP textureStars;
@@ -161,7 +164,7 @@ glm::vec3 trace(Ray ray, int step)
 	}
 	//--------------------------
 
-	// Transparency of cone through refraction
+	// Refraction through cone
 	//--------------------------
 	if(ray.xindex == 5 && step < MAX_STEPS)
 	{
@@ -181,6 +184,14 @@ glm::vec3 trace(Ray ray, int step)
 		colorSum += refColor * (1 - transVal);
 
 		return colorSum;
+	}
+	//--------------------------
+
+	// Refraction through cone
+	//--------------------------
+	if(ray.xindex == 6 && step < MAX_STEPS)
+	{
+
 	}
 	//--------------------------
 
@@ -238,7 +249,6 @@ void drawBox(float length, float width, float height, float x, float y, float z,
 	sceneObjects.push_back(top);
 }
 
-
 void drawTetrahedron(float len, float x, float y, float z, glm::vec3 col) {
 
 
@@ -269,7 +279,7 @@ void display()
 	float cellX = (XMAX-XMIN)/NUMDIV;  //cell width
 	float cellY = (YMAX-YMIN)/NUMDIV;  //cell height
 
-	glm::vec3 eye(0., 0., 0.);  //The eye position (source of primary rays) is the origin
+	glm::vec3 eye(eye_x, eye_y, eye_z);  //The eye position (source of primary rays) is the origin
 
 	glClear(GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
@@ -306,8 +316,17 @@ void display()
 
 void special(int key, int x, int y)
 {
-    if (key == GLUT_KEY_UP) EDIST += 1;
-    else if (key == GLUT_KEY_DOWN) EDIST -= 1;
+	//--------------------------
+	// Camera motion
+    if (key == GLUT_KEY_UP) EDIST += 5;
+    else if (key == GLUT_KEY_DOWN) EDIST -= 5;
+	else if (key == GLUT_KEY_LEFT) eye_x -= 5;
+    else if (key == GLUT_KEY_RIGHT) eye_x += 5;
+
+	// Bounding checks for camera motion
+	if (EDIST <= -200) EDIST == -200;
+	if (EDIST >= 0) EDIST == 0;
+	//--------------------------
 
     glutPostRedisplay();
 }
@@ -340,8 +359,8 @@ void initialize()
                               glm::vec3(-50., -20, -200),
                               glm::vec3(0.5, 0.5, 0));
 
-	Plane *wallPlane = new Plane( glm::vec3(-50., -20, -200),
-	                        glm::vec3(50., -20, -200),
+	Plane *wallPlane = new Plane( glm::vec3(-50., -25, -200),
+	                        glm::vec3(50., -25, -200),
 	                        glm::vec3(50., 50, -200),
 	                        glm::vec3(-50., 500, -200),
 	                        glm::vec3(0.4, 0.2, 0));
