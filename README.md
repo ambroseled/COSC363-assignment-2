@@ -12,10 +12,10 @@ Ray Tracing implementation modeling geometric objects and illumination models.
 ## Features
 
 - Primitve Objects
--- Cone
- - Tetrahedron
- - Sphere
- - Cube
+  - Cone
+  - Tetrahedron
+  - Sphere
+  - Cube
 - Camera motion
 - Refraction
 - Reflection
