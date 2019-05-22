@@ -1,7 +1,7 @@
 /*========================================================================
-* COSC 363  Computer Graphics (2018)
-* Ray tracer
-* See Lab07.pdf for details.
+* COSC 363  Computer Graphics (2019)
+* Ray tracer for assigment 2
+* Ambrose Ledbrook - 79172462
 *=========================================================================
 */
 #include <iostream>
@@ -18,7 +18,6 @@
 #include "Cylinder.h"
 #include "Tetrahedron.h"
 using namespace std;
-
 const float WIDTH = 20.0;
 const float HEIGHT = 20.0;
 float EDIST = 40.0;
@@ -34,7 +33,6 @@ float eye_y = 0.;
 float eye_z = 0.;
 vector<SceneObject*> sceneObjects;  //A global list containing pointers to objects in the scene
 TextureBMP textureSphere;
-TextureBMP textureStars;
 
 
 //---The most important function in a ray tracer! ----------------------------------
@@ -87,7 +85,7 @@ glm::vec3 trace(Ray ray, int step)
 	//--------------------------
 	// Procedural pattern on sphere
 	if(ray.xindex == 7) {
-	   int val = ((int) (ray.xpt.x + ray.xpt.y)) % 3;
+	   int val = ((int) (ray.xpt.x - ray.xpt.y)) % 3;
 	   if (val == 0) {
 		   materialCol = glm::vec3(1, 0.4, 0.35);
 	   } else if (val == 1) {
@@ -187,19 +185,14 @@ glm::vec3 trace(Ray ray, int step)
 	}
 	//--------------------------
 
-	// Refraction through cone
-	//--------------------------
-	if(ray.xindex == 6 && step < MAX_STEPS)
-	{
-
-	}
-	//--------------------------
-
-
     return materialCol + colorSum*0.8f;
 }
 
-
+/**
+* This method implements ray tracing in the scene. It divides a pixel into
+* four even sub pixels and traces a ray along each of them and then takes the
+* average of the four colours found
+*/
 glm::vec3 antiAlias(float x, float y, glm::vec3 eye, float pixelSize) {
 	float quarterLower = pixelSize * 0.25;
 	float quarterUpper = pixelSize * 0.75;
@@ -223,6 +216,9 @@ glm::vec3 antiAlias(float x, float y, glm::vec3 eye, float pixelSize) {
 	return colorSum;
 }
 
+/**
+* This method constructs a cube from 6 plane objects.
+*/
 void drawBox(float length, float width, float height, float x, float y, float z, glm::vec3 col) {
 	glm::vec3 a = glm::vec3(x, y, z);
 	glm::vec3 b = glm::vec3(x + length, y, z);
@@ -249,6 +245,9 @@ void drawBox(float length, float width, float height, float x, float y, float z,
 	sceneObjects.push_back(top);
 }
 
+/**
+* This method constructs a tetrahedron using 4 Tetrahedron triangle objects
+*/
 void drawTetrahedron(float len, float x, float y, float z, glm::vec3 col) {
 
 
@@ -298,8 +297,8 @@ void display()
 
 		    Ray ray = Ray(eye, dir);		//Create a ray originating from the camera in the direction 'dir'
 			ray.normalize();				//Normalize the direction of the ray to a unit vector
-		   // glm::vec3 col = antiAlias(xp, yp, eye, cellX); //Trace the primary ray and get the colour value
-		    glm::vec3 col = trace(ray, 1);
+		    glm::vec3 col = antiAlias(xp, yp, eye, cellX);
+		    //glm::vec3 col = trace(ray, 1); // Uncomment to see scene without anti-aliasing
 
 			glColor3f(col.r, col.g, col.b);
 			glVertex2f(xp, yp);				//Draw each cell with its color value
@@ -313,7 +312,9 @@ void display()
     glFlush();
 }
 
-
+/**
+* This method provides the camera motion within the scene
+*/
 void special(int key, int x, int y)
 {
 	//--------------------------
@@ -345,32 +346,25 @@ void initialize()
     glClearColor(0, 0, 0, 1);
 
 	textureSphere = TextureBMP("Gaseous4.bmp");
-	textureStars = TextureBMP("stars.bmp");
 
 	//-- Create a pointer to a sphere object
     Sphere *sphere1 = new Sphere(glm::vec3(-5.0, -5.0, -110.0), 10.0, glm::vec3(0, 0, 1));
     Sphere *sphere2 = new Sphere(glm::vec3(3, 5, -90.0), 3, glm::vec3(1, 0, 1));
     Sphere *sphere3 = new Sphere(glm::vec3(-22, -17, -120), 2.5, glm::vec3(0, 1, 1));
 	Sphere *sun = new Sphere(glm::vec3(27, 25, -130.0), 4, glm::vec3(0, 1, 1));
-
     Plane *floorPlane = new Plane( glm::vec3(-50., -20, -40),
                               glm::vec3(50., -20, -40),
                               glm::vec3(50., -20, -200),
                               glm::vec3(-50., -20, -200),
                               glm::vec3(0.5, 0.5, 0));
-
 	Plane *wallPlane = new Plane( glm::vec3(-50., -25, -200),
 	                        glm::vec3(50., -25, -200),
 	                        glm::vec3(50., 50, -200),
 	                        glm::vec3(-50., 500, -200),
 	                        glm::vec3(0.4, 0.2, 0));
-
-
     Cone *coneTrans = new Cone(glm::vec3(-15, -20, -85), 4, 10, glm::vec3(1, 0, 1));
 	Cone *coneNormal = new Cone(glm::vec3(12.5, -10, -92.5), 2, 6, glm::vec3(1, 0, 1));
-
 	Cylinder *cylinder = new Cylinder(glm::vec3(25, -5, -130), 5, 10, glm::vec3(0, 1, 0));
-
 
 	//--Add the above to the list of scene objects.
     sceneObjects.push_back(sphere1); // 0
@@ -382,7 +376,6 @@ void initialize()
 	sceneObjects.push_back(coneNormal); // 6
 	sceneObjects.push_back(sun); // 7
 	sceneObjects.push_back(cylinder); // 8
-
 
 	drawBox(5, 5, 5, 10, -15, -90, glm::vec3(0.4648, 0, 0.996));
 	drawTetrahedron(0.5, 25, 0, -180, glm::vec3(0, 1, 1));

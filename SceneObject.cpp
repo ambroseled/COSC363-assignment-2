@@ -29,4 +29,7 @@ glm::vec3 SceneObject::rotateZ(glm::vec3 pos, float angle)
 		{0, 0, 1, 0},
 		{0, 0, 0, 1}
 	};
+	glm::vec4 rotation = glm::vec4(pos, 0.0) * rotationMat;
+
+	return glm::vec3(rotation);
 }
