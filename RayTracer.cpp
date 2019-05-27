@@ -1,6 +1,6 @@
 /*========================================================================
 * COSC 363  Computer Graphics (2019)
-* Ray tracer for assigment 2
+* Ray tracer for assignment 2
 * Ambrose Ledbrook - 79172462
 *=========================================================================
 */
@@ -387,7 +387,7 @@ void initialize()
 int main(int argc, char *argv[]) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB );
-    glutInitWindowSize(800, 800);
+    glutInitWindowSize(500, 500);
     glutInitWindowPosition(20, 20);
     glutCreateWindow("Raytracer");
 

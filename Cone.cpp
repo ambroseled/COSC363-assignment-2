@@ -1,10 +1,18 @@
-
+/*----------------------------------------------------------
+* COSC363  Ray Tracer Assignment
+*
+*  Cone class
+*  This is a subclass of Object, and hence implements the
+*  methods intersect() and normal().
+-------------------------------------------------------------*/
 
 
 #include "Cone.h"
 #include <math.h>
 
-
+/**
+* Implemnting the cone intersection equation
+*/
 float Cone::intersect(glm::vec3 pos, glm::vec3 dir)
 {
     glm::vec3 d = pos - center;
@@ -47,7 +55,9 @@ float Cone::intersect(glm::vec3 pos, glm::vec3 dir)
 }
 
 
-
+/**
+* Implementing the normal conversion for a cone
+*/
 glm::vec3 Cone::normal(glm::vec3 pnt) {
     glm::vec3 d = pnt - center;
     float r = sqrt(pow(d.x, 2) + pow(d.z, 2));

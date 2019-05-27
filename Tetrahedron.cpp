@@ -1,8 +1,17 @@
-
+/*----------------------------------------------------------
+* COSC363  Ray Tracer Assignment
+*
+*  Tetrahedron class
+*  This is a subclass of Object, and hence implements the
+*  methods intersect() and normal().
+-------------------------------------------------------------*/
 
 #include "Tetrahedron.h"
 #include <math.h>
 
+/**
+* Check if a point is inside the triangle plane
+*/
 bool Tetrahedron::isInside(glm::vec3 point) {
     glm::vec3 norm = normal(point);
 
@@ -19,6 +28,9 @@ bool Tetrahedron::isInside(glm::vec3 point) {
         glm::dot(glm::cross(uC, vC), norm) > 0;
 }
 
+/**
+* Intersection check for a point with the traingle plane
+*/
 float Tetrahedron::intersect(glm::vec3 pos, glm::vec3 dir) {
     glm::vec3 norm = normal(pos);
     glm::vec3 vDif = a - pos;
@@ -35,7 +47,9 @@ float Tetrahedron::intersect(glm::vec3 pos, glm::vec3 dir) {
 
 }
 
-
+/**
+* Normal calculation for the plane
+*/
 glm::vec3 Tetrahedron::normal(glm::vec3 pos)
 {
     glm::vec3 n = glm::cross(b - a, c - a);

@@ -1,4 +1,10 @@
-
+/*----------------------------------------------------------
+* COSC363  Ray Tracer Assignment
+*
+*  Cylinder class
+*  This is a subclass of Object, and hence implements the
+*  methods intersect() and normal().
+-------------------------------------------------------------*/
 
 #ifndef H_CYLINDER
 #define H_CYLINDER

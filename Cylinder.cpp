@@ -1,9 +1,17 @@
-
+/*----------------------------------------------------------
+* COSC363  Ray Tracer Assignment
+*
+*  Cylinder class
+*  This is a subclass of Object, and hence implements the
+*  methods intersect() and normal().
+-------------------------------------------------------------*/
 
 #include "Cylinder.h"
 #include <math.h>
 
-
+/**
+* Implementing the intersection check equation for a cylinder
+*/
 float Cylinder::intersect(glm::vec3 pos, glm::vec3 dir) {
     glm::vec3 d = pos - center;
 
@@ -41,6 +49,9 @@ float Cylinder::intersect(glm::vec3 pos, glm::vec3 dir) {
     }
 }
 
+/**
+* Implementing normal conversion for cylinder
+*/
 glm::vec3 Cylinder::normal(glm::vec3 pnt) {
     glm::vec3 d = pnt - center;
     glm::vec3 normal = glm::vec3(d.x, 0, d.z);
