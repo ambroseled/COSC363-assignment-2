@@ -206,7 +206,7 @@ glm::vec3 antiAlias(float x, float y, glm::vec3 eye, float pixelSize) {
 	glm::vec3 colorSum = glm::vec3(0, 0, 0);
 
 	for (int i = 0; i < 4; i++) {
-		Ray ray = Ray(eye, glm::vec3(x + quarters[0].x, y + quarters[0].y, -EDIST));
+		Ray ray = Ray(eye, glm::vec3(x + quarters[i].x, y + quarters[i].y, -EDIST));
 		ray.normalize();
 		colorSum += trace(ray, 1);
 	}

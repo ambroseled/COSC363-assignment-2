@@ -1,3 +1,0 @@
-/home/cosc/student/ajl190/Desktop/@nd pro/COSC363/COSC363-assigment-2/CMakeFiles/rebuild_cache.dir
-/home/cosc/student/ajl190/Desktop/@nd pro/COSC363/COSC363-assigment-2/CMakeFiles/RayTracer.out.dir
-/home/cosc/student/ajl190/Desktop/@nd pro/COSC363/COSC363-assigment-2/CMakeFiles/edit_cache.dir
